@@ -20,10 +20,10 @@ export type RepoAnalysis = {
 export const analyzeRepo = createServerFn({ method: "GET" })
   .inputValidator((data: unknown) => inputSchema.parse(data))
   .handler(async ({ data }): Promise<RepoAnalysis> => {
-    const { loadRepoContext, contextToPrompt } = await import("./github.server");
+    const { loadRepoContextCached, contextToPrompt } = await import("./github.server");
     const { collectResponsesText, extractJson } = await import("./ai/gateway.server");
 
-    const context = await loadRepoContext(data);
+    const context = await loadRepoContextCached(data);
 
     const raw = await collectResponsesText([
       {
