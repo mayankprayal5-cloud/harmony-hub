@@ -142,3 +142,16 @@ export function contextToPrompt(context: RepoContext) {
     .filter(Boolean)
     .join("\n");
 }
+
+const cache = new Map<string, { at: number; context: RepoContext }>();
+const TTL = 10 * 60 * 1000;
+
+/** loadRepoContext with a short in-memory cache, to stay inside GitHub's anonymous rate limit. */
+export async function loadRepoContextCached(ref: RepoRef): Promise<RepoContext> {
+  const key = `${ref.owner}/${ref.repo}`.toLowerCase();
+  const hit = cache.get(key);
+  if (hit && Date.now() - hit.at < TTL) return hit.context;
+  const context = await loadRepoContext(ref);
+  cache.set(key, { at: Date.now(), context });
+  return context;
+}
