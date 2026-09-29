@@ -37,7 +37,7 @@ export function SiteHeader() {
               <Link
                 key={link.to}
                 to={link.to}
-                search={link.to === "/overview" || link.to === "/ask" ? { repo } : undefined}
+                {...(link.to === "/overview" || link.to === "/ask" ? { search: { repo } } : {})}
                 className="rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
                 activeOptions={{ exact: link.to === "/" }}
                 activeProps={{ className: "text-foreground bg-secondary" }}
@@ -73,7 +73,7 @@ export function SiteHeader() {
           <Link
             key={link.to}
             to={link.to}
-            search={link.to === "/overview" || link.to === "/ask" ? { repo } : undefined}
+            {...(link.to === "/overview" || link.to === "/ask" ? { search: { repo } } : {})}
             onClick={() => setOpen(false)}
             className="rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
             activeOptions={{ exact: link.to === "/" }}
