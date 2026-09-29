@@ -11,7 +11,9 @@ export function parseRepoUrl(input: string): RepoRef | null {
   if (!trimmed) return null;
 
   const shorthand = /^([A-Za-z0-9_.-]+)\/([A-Za-z0-9_.-]+)$/.exec(trimmed);
-  if (shorthand) return { owner: shorthand[1], repo: shorthand[2].replace(/\.git$/, "") };
+  if (shorthand && shorthand[1] && shorthand[2]) {
+    return { owner: shorthand[1], repo: shorthand[2].replace(/\.git$/, "") };
+  }
 
   const match = GITHUB_RE.exec(trimmed);
   if (!match) return null;

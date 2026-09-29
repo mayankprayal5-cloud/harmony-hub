@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/ask")({
   validateSearch: (search: Record<string, unknown>) => ({
-    repo: typeof search.repo === "string" && search.repo.trim() ? search.repo.trim() : undefined,
+    repo: typeof search["repo"] === "string" && search["repo"].trim() ? (search["repo"] as string).trim() : undefined,
   }),
   head: () => ({
     meta: [

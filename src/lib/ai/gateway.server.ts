@@ -36,7 +36,7 @@ export async function streamResponsesText(
   const gateway = createLovableAiGatewayRunIdFetch(opts.runId);
   const response = await gateway.fetch(GATEWAY_URL, {
     method: "POST",
-    signal: opts.signal,
+    ...(opts.signal ? { signal: opts.signal } : {}),
     headers: {
       "Content-Type": "application/json",
       "Lovable-API-Key": apiKey,
@@ -121,7 +121,7 @@ export async function collectResponsesText(
 /** Extracts the first JSON object from a model response that may include prose or fences. */
 export function extractJson<T>(text: string): T {
   const fenced = /```(?:json)?\s*([\s\S]*?)```/.exec(text);
-  const candidate = fenced ? fenced[1] : text;
+  const candidate = (fenced ? fenced[1] : text) ?? "";
   const start = candidate.indexOf("{");
   const end = candidate.lastIndexOf("}");
   if (start === -1 || end === -1) throw new AiGatewayError(502, "The AI response could not be read. Please try again.");

@@ -11,7 +11,7 @@ import { analyzeRepo } from "@/lib/repolens.functions";
 
 export const Route = createFileRoute("/overview")({
   validateSearch: (search: Record<string, unknown>) => ({
-    repo: typeof search.repo === "string" && search.repo.trim() ? search.repo.trim() : undefined,
+    repo: typeof search["repo"] === "string" && search["repo"].trim() ? (search["repo"] as string).trim() : undefined,
   }),
   head: () => ({
     meta: [

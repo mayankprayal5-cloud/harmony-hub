@@ -50,7 +50,10 @@ export const Route = createFileRoute("/api/chat")({
               },
               ...parsed.messages,
             ],
-            { signal: request.signal, runId: getLovableAiGatewayRunId(request) },
+            (() => {
+              const runId = getLovableAiGatewayRunId(request);
+              return { signal: request.signal, ...(runId ? { runId } : {}) };
+            })(),
           );
 
           return new Response(
